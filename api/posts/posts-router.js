@@ -34,8 +34,10 @@ router.get("/:id", (req, res) => {
 router.post("/", (req, res) => {
     if(req.body.title && req.body.contents) {
         Posts.insert(req.body)
-            .then( post => {
-                res.status(201).json(req.body);
+            .then( insertRes => {
+                res.status(201).json({
+                    ...req.body, id: insertRes.id
+                });
             })
             .catch( err => {
                 res.status(500).json({ 
