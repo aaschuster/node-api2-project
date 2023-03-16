@@ -72,10 +72,13 @@ router.put("/:id", async (req, res) => {
 })
 
 router.delete("/:id", async (req, res) => {
+    const {id} = req.params;
+    const post = await Posts.findById(id);
+
     try {
-        const IDvalid = await Posts.remove(req.params.id);
+        const IDvalid = await Posts.remove(id);
         if(IDvalid) {
-            res.status(200).json({message: "The post was successfully deleted."});
+            res.status(200).json(post);
         } else {
             res.status(404).json (
                 { message: "The post with the specified ID does not exist" }
@@ -91,7 +94,7 @@ router.delete("/:id", async (req, res) => {
 router.get("/:id/comments", async (req, res) => {
     const {id} = req.params;
     const post = await Posts.findById(id);
-    
+
     Posts.findPostComments(id)
         .then( comments => {
             if(post) res.status(200).json(comments);
