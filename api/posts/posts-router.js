@@ -78,8 +78,8 @@ router.delete("/:id", async (req, res) => {
     const post = await Posts.findById(id);
 
     try {
-        const IDvalid = await Posts.remove(id);
-        if(IDvalid) {
+        await Posts.remove(id);
+        if(post) {
             res.status(200).json(post);
         } else {
             res.status(404).json (
